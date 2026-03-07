@@ -1,16 +1,21 @@
+using System;
 using UnityEngine;
+using Zenject;
 
 public class Bootstrap : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    private ISceneLoadService _sceneLoadService;
 
-    // Update is called once per frame
-    void Update()
+    [Inject]
+    private void Construct(ISceneLoadService sceneLoadService)
     {
+        _sceneLoadService = sceneLoadService;
+    }
+    
+    private void Start()
+    {
+        Application.targetFrameRate = 60;
         
+        _sceneLoadService.LoadScene(Scenes.Gameplay);
     }
 }
