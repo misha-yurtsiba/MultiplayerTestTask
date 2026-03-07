@@ -13,6 +13,17 @@ public class AssetProvider
         return prefab;
     }
 
+    public GameObject LoadAsset(string path)
+    {
+        GameObject prefab = Resources.Load<GameObject>(path);
+        
+        if (prefab == null)
+        {
+            Debug.LogError($"Couldn't load asset {path}");
+        }
+        return prefab;
+    }
+
     public T InstantiateAsset<T>(string path) where T : Component
     {
         T prefab = LoadAsset<T>(path);

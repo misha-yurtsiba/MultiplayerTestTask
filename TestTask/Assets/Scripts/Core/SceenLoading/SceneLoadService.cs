@@ -34,16 +34,4 @@ public class SceneLoadService : ISceneLoadService, IInitializable
         
         await _loadingCurtain.Hide();
     }
-
-}
-
-public enum Scenes
-{
-    Bootstrap,
-    Gameplay
-}
-
-public interface ISceneLoadService
-{
-    void LoadScene(Scenes scene);
 }
