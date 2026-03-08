@@ -5,17 +5,17 @@ using Zenject;
 public class PlayerNetworkSpawner : NetworkBehaviour, IPlayerNetworkSpawner, IPlayerJoined, IPlayerLeft
 {
     private AssetProvider _assetProvider;
+    private PlayerRegistry _playerRegistry;
     private IPlayerFactory _playerFactory;
 
     [Networked, OnChangedRender(nameof(OnPlayerCountChanged))]
-    private int _playerCount { get; set; }
+    public int _playerCount { get; set; }
 
     [Inject]
     private void Construct(AssetProvider assetProvider)
     {
         _assetProvider = assetProvider;
     }
-
     public void Initialize()
     {
         
@@ -23,7 +23,7 @@ public class PlayerNetworkSpawner : NetworkBehaviour, IPlayerNetworkSpawner, IPl
 
     public override void Spawned()
     {
-        Debug.Log("Spawned" + $"{Runner == null}");
+        _playerRegistry = new PlayerRegistry();
         _playerFactory = new PlayerFactory(Runner, _assetProvider);
     }
 
@@ -34,13 +34,22 @@ public class PlayerNetworkSpawner : NetworkBehaviour, IPlayerNetworkSpawner, IPl
         Debug.Log("PlayerJoined" + $"{player.PlayerId}");
 
         Vector3 spawnPos = new Vector3(Random.Range(-5f, 5f), 1, Random.Range(-5f, 5f));
-
         NetworkObject playerObj = _playerFactory.Create(player, spawnPos);
+        _playerRegistry.Add(player, playerObj);
+        _playerCount = _playerRegistry.Count;
     }
 
     public void PlayerLeft(PlayerRef player)
     {
-        
+        if (!HasStateAuthority) return;
+
+        if (_playerRegistry.TryGet(player, out var obj))
+        {
+            Runner.Despawn(obj);
+            _playerRegistry.Remove(player);
+        }
+
+        _playerCount = _playerRegistry.Count;
     }
 
     private void OnPlayerCountChanged()
@@ -48,35 +57,3 @@ public class PlayerNetworkSpawner : NetworkBehaviour, IPlayerNetworkSpawner, IPl
         
     }
 }
-
-public interface IPlayerNetworkSpawner
-{
-    void Initialize();
-}
-
-public interface IPlayerFactory
-{
-    NetworkObject Create(PlayerRef player, Vector3 position);
-}
-
-public class PlayerFactory : IPlayerFactory
-{
-    private readonly NetworkRunner _runner;
-    private readonly GameObject _playerPrefab;
-
-    public PlayerFactory(NetworkRunner runner, AssetProvider assetProvider)
-    {
-        _runner = runner;
-
-        _playerPrefab = assetProvider.LoadAsset(AssetsPath.PlayerModelPath);
-    }
-
-    public NetworkObject Create(PlayerRef player, Vector3 position)
-    {
-        var obj = _runner.Spawn(_playerPrefab, position, Quaternion.identity, player);
-        _runner.SetPlayerObject(player, obj);
-        return obj;
-    }
-}
-
-

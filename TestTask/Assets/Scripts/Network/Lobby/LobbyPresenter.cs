@@ -22,7 +22,7 @@ public class LobbyPresenter : IDisposable
     {
         _view.OnCreateLobbyButtonPressed -= OnStartGame;
     }
-    public async void OnStartGame(CreateLobbyData data)
+    public void OnStartGame(CreateLobbyData data)
     {
         _view.SetButtonInteractable(false);
         
