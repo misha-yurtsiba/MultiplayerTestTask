@@ -4,11 +4,11 @@ Unity version 6000.0.31f. In the editor, the game should be started from the Boo
 
 To start playing the game, you first need to set up a Photon App.
 
-1. Go to the Photon websiteand open the Dashboard.
-2.Create a new application.
-3.Copy the App ID and paste it into Photon Fusion Hub (Tools/Fusion/Fusion Hub).
-4.Create a second application for voice chat.
-5.Open Photon App Settings (Assets/Photon/Fusion/Resources) and paste the voice chat App ID into the App ID Voice field.
+ 1. Go to the Photon websiteand open the Dashboard.
+ 2.Create a new application.
+ 3.Copy the App ID and paste it into Photon Fusion Hub (Tools/Fusion/Fusion Hub).
+ 4.Create a second application for voice chat.
+ 5.Open Photon App Settings (Assets/Photon/Fusion/Resources) and paste the voice chat App ID into the App ID Voice field.
 
 Then go to File/Build Profiles and build the project.
 
