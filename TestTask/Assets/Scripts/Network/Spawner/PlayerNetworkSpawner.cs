@@ -1,30 +1,27 @@
+using System.Linq;
 using Fusion;
 using UnityEngine;
 using Zenject;
 
-public class PlayerNetworkSpawner : NetworkBehaviour, IPlayerNetworkSpawner, IPlayerJoined, IPlayerLeft
+public class PlayerNetworkSpawner : NetworkBehaviour, IPlayerNetworkSpawner, IPlayerJoined, IPlayerLeft 
 {
     private AssetProvider _assetProvider;
     private PlayerRegistry _playerRegistry;
     private IPlayerFactory _playerFactory;
-
-    [Networked, OnChangedRender(nameof(OnPlayerCountChanged))]
-    public int _playerCount { get; set; }
+    private INetworkPlayerCounter _networkPlayerCounter;
 
     [Inject]
-    private void Construct(AssetProvider assetProvider)
+    private void Construct(AssetProvider assetProvider, INetworkPlayerCounter networkPlayerCounter)
     {
         _assetProvider = assetProvider;
-    }
-    public void Initialize()
-    {
-        
+        _networkPlayerCounter = networkPlayerCounter;
     }
 
     public override void Spawned()
     {
         _playerRegistry = new PlayerRegistry();
         _playerFactory = new PlayerFactory(Runner, _assetProvider);
+        _networkPlayerCounter.SetPlayerCount(Runner.ActivePlayers.Count());
     }
 
     public void PlayerJoined(PlayerRef player)
@@ -36,8 +33,10 @@ public class PlayerNetworkSpawner : NetworkBehaviour, IPlayerNetworkSpawner, IPl
         Vector3 spawnPos = new Vector3(Random.Range(-5f, 5f), 1, Random.Range(-5f, 5f));
         NetworkObject playerObj = _playerFactory.Create(player, spawnPos);
         _playerRegistry.Add(player, playerObj);
-        _playerCount = _playerRegistry.Count;
+        _networkPlayerCounter.SetPlayerCount(Runner.ActivePlayers.Count());
+
     }
+    
 
     public void PlayerLeft(PlayerRef player)
     {
@@ -48,12 +47,7 @@ public class PlayerNetworkSpawner : NetworkBehaviour, IPlayerNetworkSpawner, IPl
             Runner.Despawn(obj);
             _playerRegistry.Remove(player);
         }
-
-        _playerCount = _playerRegistry.Count;
-    }
-
-    private void OnPlayerCountChanged()
-    {
         
+        _networkPlayerCounter.SetPlayerCount(Runner.ActivePlayers.Count());
     }
 }

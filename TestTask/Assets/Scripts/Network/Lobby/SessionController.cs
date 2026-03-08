@@ -35,9 +35,3 @@ public class SessionController : IInitializable, ISessionController
         return result;
     }
 }
-
-public interface ISessionController
-{
-    event Action<NetworkStartResult> OnStartGame;
-    public UniTask<NetworkStartResult> StartHostOrClient(CreateLobbyData data);
-}

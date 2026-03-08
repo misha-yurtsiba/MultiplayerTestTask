@@ -25,6 +25,7 @@ public class GameplayEntryPoint : MonoBehaviour
         _stateMachine.AddState<InitializeGameState>(_statesFactory.Create<InitializeGameState>());
         _stateMachine.AddState<PlayerLobbyState>(_statesFactory.Create<PlayerLobbyState>());
         _stateMachine.AddState<InitializeNetworkState>(_statesFactory.Create<InitializeNetworkState>());
+        _stateMachine.AddState<GameplayState>(_statesFactory.Create<GameplayState>());
         
         _stateMachine.Enter<InitializeGameState>();
     }

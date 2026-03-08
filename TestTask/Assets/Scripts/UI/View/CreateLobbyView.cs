@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class CreateLobbyView : MonoBehaviour, ILobbyView
 {
-    [SerializeField] private TMP_InputField _playerNameInputField;
     [SerializeField] private TMP_InputField _lobbyNameInputField;
     
     [SerializeField] private Button _createLobbyButton;
@@ -23,7 +22,6 @@ public class CreateLobbyView : MonoBehaviour, ILobbyView
     {
         OnCreateLobbyButtonPressed?.Invoke(new CreateLobbyData
         {
-            PlayerName = _playerNameInputField.text,
             LobbyName = _lobbyNameInputField.text
         });
         
@@ -38,7 +36,6 @@ public class CreateLobbyView : MonoBehaviour, ILobbyView
 
 public class CreateLobbyData
 {
-    public string PlayerName;
     public string LobbyName;
 }
 
@@ -47,5 +44,3 @@ public interface ILobbyView
     event Action<CreateLobbyData> OnCreateLobbyButtonPressed;
     void SetButtonInteractable(bool isActive);
 }
-
-

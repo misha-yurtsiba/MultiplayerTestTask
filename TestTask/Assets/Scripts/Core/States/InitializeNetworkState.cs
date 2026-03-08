@@ -4,17 +4,17 @@ using UnityEngine;
 public class InitializeNetworkState : IPayload<CreateLobbyData>
 {
     private readonly ISessionController _sessionController;
-    private readonly IPlayerNetworkSpawner _playerNetworkSpawner;
     private readonly GameplayUiController _gameplayUiController;
+    private readonly StateMachine _stateMachine;
 
     public InitializeNetworkState(
         ISessionController sessionController,
-        IPlayerNetworkSpawner playerNetworkSpawner,
-        GameplayUiController gameplayUiController)
+        GameplayUiController gameplayUiController, 
+        StateMachine stateMachine)
     {
         _sessionController = sessionController;
-        _playerNetworkSpawner = playerNetworkSpawner;
         _gameplayUiController = gameplayUiController;
+        _stateMachine = stateMachine;
     }
 
     public async void Enter(CreateLobbyData data)
@@ -29,7 +29,10 @@ public class InitializeNetworkState : IPayload<CreateLobbyData>
         if (result == NetworkStartResult.Success)
         {
             _gameplayUiController.SetLobbyViewActive(false);
+            _gameplayUiController.SetPlayerCountViewActive(true);
         }
+        
+        _stateMachine.Enter<GameplayState>();
     }
     
     public void Exit()

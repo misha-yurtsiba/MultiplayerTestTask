@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class NetworkInputHandler : NetworkBehaviour, IBeforeUpdate
 {
-    private PlayerInputData _data;
+    private PlayerInputData _playerInputData;
     private NetworkEvents _networkEvents;
     
     public override void Spawned()
@@ -28,8 +28,8 @@ public class NetworkInputHandler : NetworkBehaviour, IBeforeUpdate
     
     private void OnInput(NetworkRunner runner, NetworkInput input)
     {
-        _data.Direction.Normalize();
-        input.Set(_data);
+        _playerInputData.Direction.Normalize();
+        input.Set(_playerInputData);
     }
 
     public void BeforeUpdate()
@@ -37,7 +37,7 @@ public class NetworkInputHandler : NetworkBehaviour, IBeforeUpdate
         if (HasInputAuthority == false)
             return;
         
-        _data.Direction = new Vector3(
+        _playerInputData.Direction = new Vector3(
             Input.GetAxis("Horizontal"),
             0,
             Input.GetAxis("Vertical")

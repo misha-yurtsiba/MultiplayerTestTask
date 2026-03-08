@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: CameraSettings
   m_EditorClassIdentifier: 
   _offset: {x: 0, y: 12, z: -10}
-  _smoothSpeed: 5
+  _smoothSpeed: 10

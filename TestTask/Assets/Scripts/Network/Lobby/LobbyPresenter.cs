@@ -4,14 +4,10 @@ using UnityEngine;
 public class LobbyPresenter : IDisposable
 {
     private readonly StateMachine _stateMachine;
-    private readonly GameplayUiController _gameplayUiController;
-    private readonly ISessionController _sessionController;
     private readonly ILobbyView _view;
 
-    public LobbyPresenter(ISessionController sessionController,GameplayUiController gameplayUiController, StateMachine stateMachine, ILobbyView view)
+    public LobbyPresenter(StateMachine stateMachine, ILobbyView view)
     {
-        _sessionController = sessionController;
-        _gameplayUiController = gameplayUiController;
         _stateMachine = stateMachine;
         _view = view;
 

@@ -11,7 +11,6 @@ public class VoicePlayerController : NetworkBehaviour
     private PushToTalkInput _pushToTalkInput;
     private VoiceRecorderController _voiceRecorderController;
     private NetworkVoiceSync _networkVoiceSync;
-    private SpeakingIndicatorView _view;
 
     private void Start()
     {
@@ -31,9 +30,7 @@ public class VoicePlayerController : NetworkBehaviour
 
     private void PlayerSpawned(Player player)
     {
-        _view =  player.GetComponent<SpeakingIndicatorView>();
         _networkVoiceSync = player.GetComponent<NetworkVoiceSync>();
-        
         
         _voiceRecorderController.OnVoiceDetected += _networkVoiceSync.SetSpeaking;
     }

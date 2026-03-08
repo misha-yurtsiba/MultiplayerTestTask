@@ -39,14 +39,3 @@ public class NetworkService : INetworkService
         return result.Ok ? NetworkStartResult.Success : NetworkStartResult.Failed;
     }
 }
-
-public interface INetworkService
-{
-    UniTask<NetworkStartResult> StartHostOrClient(string sessionName);
-}
-
-public enum NetworkStartResult
-{
-    Success,
-    Failed,
-}

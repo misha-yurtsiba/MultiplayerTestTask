@@ -20,9 +20,6 @@ public class NetworkPlayerMover : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        // if (!HasStateAuthority)
-        //     return;
-
         if (GetInput(out PlayerInputData input))
         {
             _playerMover.Move(input.Direction.normalized, Runner.DeltaTime);
